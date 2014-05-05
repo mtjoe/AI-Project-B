@@ -23,8 +23,7 @@ public class Egama implements Player, Piece {
 	public Move makeMove() {
 		// TODO: Algorithm for best move
 		
-		
-		Move move = new Move();
+		Move move = new Move(/* enter move */);
 		return move;
 	}
 

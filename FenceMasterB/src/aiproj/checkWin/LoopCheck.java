@@ -5,15 +5,17 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import aiproj.fencemasterImpl.*;
+import aiproj.fencemasterImpl.BoardImpl;
+import aiproj.fencemasterImpl.PlayerImpl;
+import aiproj.fencemasterImpl.Position;
 
 /**
- * Contains algorithm to check whether there are any loops in the given BoardImpl.
+ * Contains algorithm to check whether there are any loops in the given board.
  * 
  * @author Marisa Tjoe (566322) & Erlangga Satria Gama (570748)
  */
 public class LoopCheck implements CheckLogic {
-	// BoardImpl that needs loop-checking
+	// Board that needs loop-checking
 	BoardImpl b; 
 	
 	// Keeps track of the visited Positions
@@ -22,8 +24,8 @@ public class LoopCheck implements CheckLogic {
 	// Keeps track of the current path taken by the graph searching algorithm
 	LinkedList<Position> currentPath;
 	
-	// The PlayerImpl currently being checked
-	PlayerImpl currentPlayerImpl; 
+	// The player currently being checked
+	PlayerImpl currentPlayer; 
 
 	/* PUBLIC CONSTRUCTOR */
 
@@ -34,17 +36,17 @@ public class LoopCheck implements CheckLogic {
 	/* MAIN METHODS */
 	
 	/**
-	 * @return the winning PlayerImpl is there is one, null if there is no winner
+	 * @return the winning Player is there is one, null if there is no winner
 	 */
 	public PlayerImpl check() {
 		visited = new ArrayList<Position>();
 		currentPath = new LinkedList<Position>();
 
-		// Loop through each PlayerImpl
+		// Loop through each player
 		for (PlayerImpl p : b.getPlayerImpls()) {
-			currentPlayerImpl = p;
+			currentPlayer = p;
 			
-			// Loop through each position that the PlayerImpl is occupying
+			// Loop through each position that the player is occupying
 			for (Position pos : p.positions) {
 				if (!visited.contains(pos)) {
 					if (DFS(pos, null) == true) {
@@ -59,10 +61,10 @@ public class LoopCheck implements CheckLogic {
 	/* HELPER METHODS */
 	
 	/**
-	 * Recursive algorithm that will search through the BoardImpl (graph form),
+	 * Recursive algorithm that will search through the board (graph form),
 	 * while checking for loops and their validity
 	 * 
-	 * @return true if there is a loop in the BoardImpl, false otherwise
+	 * @return true if there is a loop in the board, false otherwise
 	 */
 	private boolean DFS(Position pos, Position prev) {
 		visited.add(pos);
@@ -84,7 +86,7 @@ public class LoopCheck implements CheckLogic {
 							currentPath.indexOf(pos) + 1);
 
 					// Checks whether center Position(s) is/are either owned
-					// by a different PlayerImpl or is/are empty. If it is,
+					// by a different player or is/are empty. If it is,
 					// return true
 					if (centerDifferent(currentLoop)) {
 						return true;
@@ -105,10 +107,10 @@ public class LoopCheck implements CheckLogic {
 
 	/**
 	 * Given List of Positions that forms a loop, checks whether the center of
-	 * the loop is either empty or owned by a different PlayerImpl
+	 * the loop is either empty or owned by a different player
 	 * 
 	 * @return true if center of currentLoop contains either an empty Position
-	 *         or a Position owned by a different PlayerImpl
+	 *         or a Position owned by a different player
 	 */
 	private boolean centerDifferent(List<Position> currentLoop) {
 		
@@ -155,7 +157,7 @@ public class LoopCheck implements CheckLogic {
 
 				// Return true if there is a gap in between the leftmost
 				// Position and the next loop Position in the row, and the gap
-				// is either empty or owned by another PlayerImpl
+				// is either empty or owned by another player
 				Position currColPos = this.b.getPosition(currRow,
 						rowCurrentPath.get(currRow).getFirst()).getNeighborInDir("E");
 
@@ -163,7 +165,7 @@ public class LoopCheck implements CheckLogic {
 						.contains(currColPos.getY()))) {
 					if (currColPos.isEmpty()
 							|| !currColPos.getOwner()
-									.equals(this.currentPlayerImpl)) {
+									.equals(this.currentPlayer)) {
 						return true;
 					}
 					currColPos = currColPos.getNeighborInDir("E");
@@ -183,12 +185,14 @@ public class LoopCheck implements CheckLogic {
 		int size = loopArray.size();
 		
 		while (nCurr < size){
-			while (b.isAdjacent(loopArray.get(nCurr), loopArray.get((nCurr < 2) ? (size + nCurr - 2):(nCurr-2)))){
+			while (b.isAdjacent(loopArray.get(nCurr), loopArray.get((nCurr < 2) ? (size + nCurr - 2):(nCurr-2)))) {
 				loopArray.remove(nCurr-1);
-				nCurr--;
+				size = loopArray.size();
+				if (size <= 3) {
+					break;
+				}
 			}
 			nCurr++;
-			size = loopArray.size();
 		}
 		return loopArray;
 	}
