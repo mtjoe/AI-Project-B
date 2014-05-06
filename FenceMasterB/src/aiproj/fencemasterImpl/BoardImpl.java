@@ -12,8 +12,8 @@ public class BoardImpl {
 	private PlayerImpl[] playerImpls; 
 	private Position bArray[][];
 	private int n;
-	private int nRow;
-	private int nCol;
+	int nRow;
+	int[] nCol;
 	int totalEntries;
 	
 	/* PUBLIC CONSTRUCTOR */
@@ -32,6 +32,7 @@ public class BoardImpl {
 		this.totalEntries = 0;
 		
 		nRow = (2*n)-1;
+		nCol = new int[nRow];
 		
 		bArray = new Position[nRow][];
 		
@@ -39,12 +40,12 @@ public class BoardImpl {
 		
 		// Initialize increasing rows (0 -- n) to null
 		for (int i=0; i<n; i++) {
-			nCol = n + i;
-			totalEntries += nCol;
+			nCol[i] = n + i;
+			totalEntries += nCol[i];
 			
-			Position[] rowArray = new Position[nCol];
+			Position[] rowArray = new Position[nCol[i]];
 			
-			for (int j=0; j<nCol; j++){
+			for (int j=0; j<nCol[i]; j++){
 				rowArray[j] = new Position(this, i, j); 
 			}
 			
@@ -54,12 +55,12 @@ public class BoardImpl {
 		// initialize decreasing rows (n+1 -- 2n-1) to null
 		
 		for (int i=n; i<nRow; i++) {
-			nCol = (3 * n) - 2 - i;
-			totalEntries += nCol;
+			nCol[i] = (3 * n) - 2 - i;
+			totalEntries += nCol[i];
 			
-			Position[] rowArray = new Position[nCol];
+			Position[] rowArray = new Position[nCol[i]];
 			
-			for (int j=0; j<nCol; j++){
+			for (int j=0; j<nCol[i]; j++){
 				rowArray[j] = new Position(this, i, j); 
 			}
 			
@@ -136,32 +137,24 @@ public class BoardImpl {
 				return -1;
 			} else {
 				// Win by Tripod
+				System.out.println("WIN BY TRIPOD");
 				return winner.piece;
 			}
 		} else {
 			// Win by Loop
+			System.out.println("WIN BY LOOP");
 			return winner.piece;
 		}
 	}
 	
 	public void printBoard() {
-		// Print increasing rows (0 -- n)
-		for (int i=0; i<n; i++) {
-			nCol = n + i;
-			
-			for (int j=0; j<nCol; j++){
-				System.out.print(this.getPosition(i, j).getOwner().piece + " "); 
-			}
-			System.out.println();
-		}
+		Position pos;
 		
-		// Print decreasing rows (n+1 -- 2n-1)
-		
-		for (int i=n; i<nRow; i++) {
-			nCol = (3 * n) - 2 - i;
-			
-			for (int j=0; j<nCol; j++){
-				System.out.print(this.getPosition(i, j).getOwner().piece + " "); 
+		for (int i=0; i<nRow; i++) {
+			for (int k=0; k<(nRow-nCol[i]); k++){ System.out.print(" "); }
+			for (int j=0; j<nCol[i]; j++){
+				pos = this.getPosition(i, j);
+				System.out.print(pos.isEmpty() ? "- " : pos.getOwner().piece + " "); 
 			}
 			System.out.println();
 		}

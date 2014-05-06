@@ -11,6 +11,7 @@ public class Egama implements Player, Piece {
 	@Override
 	public int init(int n, int p) {
 		// Initialize players
+		players = new PlayerImpl[2];
 		players[0] = new PlayerImpl(p);
 		players[1] = new PlayerImpl((p == Piece.BLACK) ? WHITE : BLACK);
 		
@@ -23,7 +24,18 @@ public class Egama implements Player, Piece {
 	public Move makeMove() {
 		// TODO: Algorithm for best move
 		
-		Move move = new Move(/* enter move */);
+		int x = (int)(Math.random() * board.nRow);
+		int y = (int)(Math.random() * board.nCol[x]);
+		
+		while (!board.getPosition(x, y).isEmpty()){
+			x = (int)(Math.random() * board.nRow);
+			y = (int)(Math.random() * board.nCol[x]);
+		}
+		
+		
+		board.setMove(x, y, players[0]);
+		
+		Move move = new Move(players[0].piece, false, x, y);
 		return move;
 	}
 
