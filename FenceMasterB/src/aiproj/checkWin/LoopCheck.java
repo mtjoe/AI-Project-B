@@ -185,7 +185,7 @@ public class LoopCheck implements CheckLogic {
 		int size = loopArray.size();
 		
 		while (nCurr < size){
-			while (b.isAdjacent(loopArray.get(nCurr), loopArray.get((nCurr < 2) ? (size + nCurr - 2):(nCurr-2)))) {
+			while (b.isAdjacent(loopArray.get(nCurr), loopArray.get((nCurr < 2) ? (size + nCurr - 3):(nCurr-2)))) {
 				loopArray.remove(nCurr-1);
 				size = loopArray.size();
 				nCurr--;
