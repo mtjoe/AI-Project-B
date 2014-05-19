@@ -29,7 +29,7 @@ public class Egama implements Player, Piece {
 		int[] c = new int[2];
 
 		/* FIRST MOVE */
-		if (board.getNTotalMoves() <= board.getTotalEntries() - 30) {
+		if (board.getNTotalMoves() <= board.getTotalEntries() - 50) {
 
 			/* random */
 			c = this.getRandomMove();
