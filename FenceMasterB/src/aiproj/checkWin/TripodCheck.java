@@ -208,7 +208,7 @@ public class TripodCheck implements CheckLogic{
 	 * is found
 	 */
 	public PlayerImpl check() {	
-		
+		this.visitedEdge.clear();
 		/* Loop through each PlayerImpl in the BoardImpl */
 		for (PlayerImpl player:b.getPlayerImpls()) {
 			startingPoints = player.startingPoints;

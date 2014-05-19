@@ -31,10 +31,13 @@ public class Referee implements Piece{
 		int checkinit=0;
 		System.out.println("Referee started !");
 		try{
+			System.out.println("a: " +  args[1]);
 			P1 = (Player)(Class.forName(args[1]).newInstance());
+			System.out.println(args[2]);
 			P2 = (Player)(Class.forName(args[2]).newInstance());
 		}
 		catch(Exception e){
+			e.printStackTrace();
 			System.out.println("Error "+ e.getMessage());
 			System.exit(1);
 		}
