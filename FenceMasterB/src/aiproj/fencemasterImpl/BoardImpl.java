@@ -97,9 +97,14 @@ public class BoardImpl {
 	 */
 	public void setMove(int x, int y, PlayerImpl p){
 		bArray[x][y].setOccupy(p);
-		p.addPosition(this.getPosition(x, y), n);
+		p.addPosition(this.getPosition(x, y));
 		this.nTotalMoves++;
 		return;
+	}
+	
+	public void removeMove(int x, int y, PlayerImpl p) {
+		bArray[x][y].setOccupy(null);
+		p.removePosition(this.getPosition(x, y));
 	}
 	
 	/* GETTER METHODS */

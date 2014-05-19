@@ -42,7 +42,7 @@ public class PlayerImpl {
 	 * 
 	 * @param pos
 	 */
-	public void addPosition(Position pos, int n) {
+	public void addPosition(Position pos) {
 		this.positions.add(pos);
 
 		// Pre-set hash map startingPoints, whose function is to group together
@@ -52,6 +52,17 @@ public class PlayerImpl {
 			startingPoints.get(pos.getWhichEdge()).add(pos);
 
 		}
+	}
+	
+	public void removePosition(Position pos) {
+		this.positions.remove(pos);
+		if (pos.isNonCorner && pos.isEdge){
+			if (this.startingPoints.containsValue(pos)) {
+				this.startingPoints.get(pos.getWhichEdge()).remove(pos);
+			}
+		}
+		
+		
 	}
 	
 	public int getPiece() {

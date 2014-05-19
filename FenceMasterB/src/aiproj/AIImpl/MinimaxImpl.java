@@ -37,6 +37,7 @@ public class MinimaxImpl {
 		Position pos;
 		for (int i=0; i<this.emptyPos.size(); i++) {
 			pos = this.emptyPos.removeFirst();
+			board.setMove(pos.getX(), pos.getY(), mainPlayer);
 			maxUtil = Utility.LOSE - 1;
 			
 			if ((util = MinimaxValue(State.MIN)) > maxUtil) {
@@ -44,6 +45,7 @@ public class MinimaxImpl {
 				maxUtil = util;
 			}
 			this.emptyPos.addLast(pos);
+			board.removeMove(pos.getX(), pos.getY(), mainPlayer);
 	
 		}
 		return maxUtilPos;
@@ -55,8 +57,6 @@ public class MinimaxImpl {
 		
 		if (this.currDepth >= this.minDepth){
 			return (state == State.MAX) ? -10 : 10;
-		} else if (size == 0) {
-			return Utility.DRAW;
 		} else if ((winner = board.getWinner()) > 0) {
 			minDepth = currDepth;
 			/* If win */
@@ -68,22 +68,23 @@ public class MinimaxImpl {
 				return Utility.LOSE;
 			} else {
 				return 0;
-	
 			}
 		} else {
-			
 			currDepth++;
 			Position pos;
 			if (state == State.MAX) {
 				maxUtil = Utility.LOSE - 1;
 				for (int i=0; i<size; i++) {
+					
 					pos = this.emptyPos.get(0);
 					this.emptyPos.remove(pos);
+					board.setMove(pos.getX(), pos.getY(), mainPlayer);
 					
 					if ((util = MinimaxValue(State.MIN)) > maxUtil) {
 						maxUtil = util;
 					}
 					this.emptyPos.addLast(pos);
+					board.removeMove(pos.getX(), pos.getY(), mainPlayer);
 				}
 				currDepth--;
 				return maxUtil;
@@ -91,12 +92,14 @@ public class MinimaxImpl {
 				minUtil = Utility.WIN + 1;
 				for (int i=0; i<size; i++) {
 					pos = this.emptyPos.removeFirst();
+					board.setMove(pos.getX(), pos.getY(), mainPlayer);
 					
 					if ((util = MinimaxValue(State.MAX)) < minUtil) {
 						minUtil = util;
 					}
 					
 					this.emptyPos.addLast(pos);
+					board.removeMove(pos.getX(), pos.getY(), mainPlayer);
 				}
 				currDepth--;
 				return minUtil;
