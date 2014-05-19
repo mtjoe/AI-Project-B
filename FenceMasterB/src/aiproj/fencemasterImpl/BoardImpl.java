@@ -1,6 +1,7 @@
 package aiproj.fencemasterImpl;
 
-import aiproj.checkWin.*;
+import aiproj.checkWin.LoopCheck;
+import aiproj.checkWin.TripodCheck;
 
 /**
  * The Board comes in the form of a 2-D ArrayList of Position Objects, to 
@@ -12,9 +13,10 @@ public class BoardImpl {
 	private PlayerImpl[] playerImpls; 
 	private Position bArray[][];
 	private int n;
-	int nRow;
-	int[] nCol;
-	int totalEntries;
+	private int nRow;
+	private int[] nCol;
+	private int totalEntries;
+	private int nTotalMoves;
 	
 	/* PUBLIC CONSTRUCTOR */
 	
@@ -30,8 +32,9 @@ public class BoardImpl {
 		this.playerImpls = playerImpls;
 		this.n = n;
 		this.totalEntries = 0;
+		this.nTotalMoves = 0;
 		
-		nRow = (2*n)-1;
+		nRow = ((2 * n) - 1);
 		nCol = new int[nRow];
 		
 		bArray = new Position[nRow][];
@@ -95,6 +98,7 @@ public class BoardImpl {
 	public void setMove(int x, int y, PlayerImpl p){
 		bArray[x][y].setOccupy(p);
 		p.addPosition(this.getPosition(x, y), n);
+		this.nTotalMoves++;
 		return;
 	}
 	
@@ -105,6 +109,24 @@ public class BoardImpl {
 	 */
 	public int getN(){
 		return this.n;
+	}
+	
+	public int getNTotalMoves() {
+		return this.nTotalMoves;
+	}
+	
+	public int getNRow() {
+		return this.nRow;
+	}
+	
+	public int getNCol(int row) {
+		return this.nCol[row];
+	}
+	
+	
+	
+	public int getTotalEntries() {
+		return this.totalEntries;
 	}
 	
 	/**
@@ -124,10 +146,14 @@ public class BoardImpl {
 	
 	/**
 	 * Checks whether there is a winner in the board.
-	 * @return The name of the winner if there is a winner, null if there is no winner
+	 * @return The piece of the winner if there is a winner, 3 if draw, -1 if there is no winner
 	 */
 	public int getWinner(){
 		PlayerImpl winner;
+		
+		if (this.isDraw()) {
+			return 3;
+		}
 		
 		LoopCheck loopCheck = new LoopCheck(this);
 		if ((winner = loopCheck.check()) == null){
@@ -145,6 +171,13 @@ public class BoardImpl {
 			System.out.println("WIN BY LOOP");
 			return winner.piece;
 		}
+	}
+	
+	public boolean isDraw() {
+		if (this.totalEntries == this.nTotalMoves) {
+			return true;
+		}
+		return false;
 	}
 	
 	public void printBoard() {

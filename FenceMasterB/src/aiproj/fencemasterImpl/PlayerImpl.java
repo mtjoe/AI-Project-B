@@ -53,4 +53,8 @@ public class PlayerImpl {
 
 		}
 	}
+	
+	public int getPiece() {
+		return this.piece;
+	}
 }
