@@ -9,6 +9,7 @@ import aiproj.fencemaster.Player;
 public class Mtjoe implements Player, Piece {
 	BoardImpl board;
 	PlayerImpl[] players;
+	boolean inDanger = false;
 
 	@Override
 	public int init(int n, int p) {
@@ -36,6 +37,8 @@ public class Mtjoe implements Player, Piece {
 		
 		/* SET MOVE */
 		board.setMove(c[0], c[1], players[0]);
+		
+		/* TODO: set inDanger */
 		
 		Move move = new Move(players[0].piece, false, c[0], c[1]);
 		return move;

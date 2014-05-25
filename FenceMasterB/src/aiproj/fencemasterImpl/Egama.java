@@ -27,23 +27,37 @@ public class Egama implements Player, Piece {
 	public Move makeMove() {
 		// TODO: Algorithm for best move
 		int[] c = new int[2];
+		
+		int nMoves = board.getNTotalMoves();
 
-		/* FIRST MOVE */
-		if (board.getNTotalMoves() <= board.getTotalEntries() - 50) {
+		/* FIRST MOVE: Random */
+		if (nMoves <= 2) {
 
 			/* random */
 			c = this.getRandomMove();
 			while (!board.getPosition(c[0], c[1]).isEmpty()) {
 				c = this.getRandomMove();
 			}
-			/* NOT FIRST MOVE */
 		} else {
-			System.out.println("THIS IS IT");
-			MinimaxImpl minimaxImpl = new MinimaxImpl(board, this.players);
-			Position best = minimaxImpl.MinimaxDecision();
+			
+			/* TODO: Find direct winning position (1 ply) */
+			
+			
+			/* TODO: Defense, check whether the opponent might win */
+			
+			
+			if (nMoves <= 50) {
+				/* TODO: Algorithm for first half of the game */
+				
+			} else {
+				/* Algorithm for last half of the game, Minimax algorithm */
+				System.out.println("THIS IS IT");
+				MinimaxImpl minimaxImpl = new MinimaxImpl(board, this.players);
+				Position best = minimaxImpl.MinimaxDecision();
 
-			c[0] = best.getX();
-			c[1] = best.getY();
+				c[0] = best.getX();
+				c[1] = best.getY();
+			}
 		}
 
 		/* SET MOVE */
