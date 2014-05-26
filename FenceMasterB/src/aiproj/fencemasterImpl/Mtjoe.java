@@ -28,7 +28,6 @@ public class Mtjoe implements Player, Piece {
 		// TODO: Algorithm for best move
 		int[] c = new int[2];
 		
-			
 		/* random */
 		c = this.getRandomMove();
 		while (!board.getPosition(c[0], c[1]).isEmpty()){
@@ -36,7 +35,7 @@ public class Mtjoe implements Player, Piece {
 		}
 		
 		/* SET MOVE */
-		board.setMove(c[0], c[1], players[0]);
+		board.setMove(c[0], c[1], players[0], false);
 		
 		/* TODO: set inDanger */
 		
@@ -46,7 +45,7 @@ public class Mtjoe implements Player, Piece {
 
 	@Override
 	public int opponentMove(Move m) {
-		board.setMove(m.Row, m.Col, players[1]);
+		board.setMove(m.Row, m.Col, players[1], false);
 		return 1;
 	}
 	

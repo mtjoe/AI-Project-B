@@ -58,7 +58,7 @@ public class MinimaxImpl {
 
 			// Set move on an empty position (temporarily)
 			pos = this.emptyPos.removeFirst();
-			board.setMove(pos.getX(), pos.getY(), mainPlayer);
+			board.setMove(pos.getX(), pos.getY(), mainPlayer, true);
 
 			// Find the Minimax value of each children, while finding the child
 			// with the largest max
@@ -123,7 +123,7 @@ public class MinimaxImpl {
 
 					// Set move to the chosen empty position in the board
 					this.emptyPos.remove(pos);
-					board.setMove(pos.getX(), pos.getY(), mainPlayer);
+					board.setMove(pos.getX(), pos.getY(), mainPlayer, true);
 
 					// Find maximum minimax value
 					if ((util = MinimaxValue(State.MIN)) > maxUtil) {
@@ -146,7 +146,7 @@ public class MinimaxImpl {
 
 					// Set move to the chosen empty position in the board
 					pos = this.emptyPos.removeFirst();
-					board.setMove(pos.getX(), pos.getY(), mainPlayer);
+					board.setMove(pos.getX(), pos.getY(), mainPlayer, true);
 
 					// Find minimum minimax value
 					if ((util = MinimaxValue(State.MAX)) < minUtil) {

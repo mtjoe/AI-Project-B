@@ -1,6 +1,8 @@
 package aiproj.fencemasterImpl;
 
 import java.io.PrintStream;
+import java.util.HashSet;
+import java.util.Set;
 
 import aiproj.AIImpl.MinimaxImpl;
 import aiproj.fencemaster.Move;
@@ -25,7 +27,7 @@ public class Egama implements Player, Piece {
 
 	@Override
 	public Move makeMove() {
-		// TODO: Algorithm for best move
+		// Algorithm for best move
 		int[] c = new int[2];
 
 		int nMoves = board.getNTotalMoves();
@@ -33,31 +35,31 @@ public class Egama implements Player, Piece {
 		/* FIRST MOVE: Random */
 		if (nMoves <= 2) {
 
-			/* random */
+			/* Random */
 			c = this.getRandomMove();
 			while (!board.getPosition(c[0], c[1]).isEmpty()) {
 				c = this.getRandomMove();
 			}
 		} else {
 
-			/* TODO: Find direct winning position (1 ply) */
-			if (directWin() != null) {
-
-			} else {
-
+			/* Find direct winning position (1 ply) */
+			if ((c = directWin()) == null) {
 				/*
-				 * TODO: If there is no direct win, check defense, check whether
+				 * If there is no direct win, check defense, check whether
 				 * the opponent might win
 				 */
-				if (defense() != null) {
-
-				} else {
-					if (nMoves <= (board.getTotalEntries() / 2)) {
+				if ((c = defense()) == null) {
+					if (nMoves <= (board.getTotalEntries())) {
 						/* TODO: Algorithm for first half of the game */
 
+						/* Random */
+						c = this.getRandomMove();
+						while (!board.getPosition(c[0], c[1]).isEmpty()) {
+							c = this.getRandomMove();
+						}
 					} else {
 						/*
-						 * Algorithm for last half of the game, Minimax
+						 * Algorithm for last half of the game, minimax
 						 * algorithm
 						 */
 						System.out.println("THIS IS IT");
@@ -73,7 +75,7 @@ public class Egama implements Player, Piece {
 		}
 
 		/* SET MOVE */
-		board.setMove(c[0], c[1], players[0]);
+		board.setMove(c[0], c[1], players[0], false);
 
 		Move move = new Move(players[0].piece, false, c[0], c[1]);
 		return move;
@@ -81,7 +83,7 @@ public class Egama implements Player, Piece {
 
 	@Override
 	public int opponentMove(Move m) {
-		board.setMove(m.Row, m.Col, players[1]);
+		board.setMove(m.Row, m.Col, players[1], false);
 		return 1;
 	}
 
@@ -106,15 +108,95 @@ public class Egama implements Player, Piece {
 		return new int[] { x, y };
 	}
 
-	private Move defense() {
+	/**
+	 * Check whether there is a possibility that the opponent might win in the
+	 * next two moves (not our move)
+	 * 
+	 * @return the move that will cause the opponent to win, null if none
+	 */
+	private int[] defense() {
+		int[] c = new int[2];
 
-		// Get neighboring positions of the opponents position
+		// Get neighboring positions of the opponents positions
+		Set<Position> neighborPos = board.getPlayerNeighbors(players[1].piece);
+
+		// Loop through
+		for (Position pos : neighborPos) {
+
+			// Add move
+			board.setMove(pos.getX(), pos.getY(), players[1], true);
+			players[1].addPosition(pos);
+
+			if (board.getWinner() == players[1].piece) {
+				// remove move previously placed
+				board.removeMove(pos.getX(), pos.getY(), players[1]);
+				players[1].removePosition(pos);
+
+				c[0] = pos.getX();
+				c[1] = pos.getY();
+				return c;
+			} else {
+				for (Position posNeighbor : pos.getNeighbors()) {
+					if (posNeighbor.getOwner() == null) {
+						// Add move
+						board.setMove(posNeighbor.getX(), posNeighbor.getY(),
+								players[1], true);
+						players[1].addPosition(posNeighbor);
+
+						if (board.getWinner() == players[1].piece) {
+							// remove move previously placed
+							board.removeMove(posNeighbor.getX(),
+									posNeighbor.getY(), players[1]);
+							players[1].removePosition(posNeighbor);
+
+							c[0] = posNeighbor.getX();
+							c[1] = posNeighbor.getY();
+							return c;
+						}
+						// remove move previously placed
+						board.removeMove(posNeighbor.getX(),
+								posNeighbor.getY(), players[1]);
+						players[1].removePosition(posNeighbor);
+					}
+				}
+			}
+			// remove move previously placed
+			board.removeMove(pos.getX(), pos.getY(), players[1]);
+			players[1].removePosition(pos);
+		}
 
 		return null;
 	}
 
-	private Move directWin() {
+	/**
+	 * Check whether there is a single ply move that let us win
+	 * 
+	 * @return [x, y] coordinates of the move, if none, return null
+	 */
+	private int[] directWin() {
+		int[] c = new int[2];
+		// Get neighboring positions of our positions
+		Set<Position> neighborPos = board.getPlayerNeighbors(players[0].piece);
 
+		for (Position pos : neighborPos) {
+			// Add move
+			board.setMove(pos.getX(), pos.getY(), players[0], true);
+			players[0].addPosition(pos);
+
+			if (board.getWinner() == players[0].piece) {
+				// remove move previously placed
+				board.removeMove(pos.getX(), pos.getY(), players[0]);
+				players[0].removePosition(pos);
+				
+				c[0] = pos.getX();
+				c[1] = pos.getY();
+
+				return c;
+			}
+			// remove move previously placed
+			board.removeMove(pos.getX(), pos.getY(), players[0]);
+			players[0].removePosition(pos);
+		}
 		return null;
 	}
 }

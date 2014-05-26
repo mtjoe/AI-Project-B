@@ -1,7 +1,12 @@
 package aiproj.fencemasterImpl;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 import aiproj.checkWin.LoopCheck;
-import aiproj.checkWin.TripodCheck;
+import aiproj.checkWin.TripodCheck2;
 
 /**
  * The Board comes in the form of a 2-D ArrayList of Position Objects, to 
@@ -10,13 +15,14 @@ import aiproj.checkWin.TripodCheck;
  * @author Marisa Tjoe (566322) & Erlangga Satria Gama (570748)
  */
 public class BoardImpl {
-	private PlayerImpl[] playerImpls; 
+	private PlayerImpl[] players; 
 	private Position bArray[][];
 	private int n;
 	private int nRow;
 	private int[] nCol;
 	private int totalEntries;
 	private int nTotalMoves;
+	private Map<Integer, Set<Position>> playersNeighPositions;
 	
 	/* PUBLIC CONSTRUCTOR */
 	
@@ -28,11 +34,15 @@ public class BoardImpl {
 	 * 		- The number of columns in rows n to ((2*n)-2) would be ((3*n)-2-i)
 	 * @param n -  Number of sides
 	 */
+	@SuppressWarnings("unchecked")
 	public BoardImpl(int n, PlayerImpl[] playerImpls){
-		this.playerImpls = playerImpls;
+		this.players = playerImpls;
 		this.n = n;
 		this.totalEntries = 0;
 		this.nTotalMoves = 0;
+		this.playersNeighPositions = new HashMap<Integer, Set<Position>>();
+		this.playersNeighPositions.put(playerImpls[0].piece, new HashSet<Position>());
+		this.playersNeighPositions.put(playerImpls[1].piece, new HashSet<Position>());
 		
 		nRow = ((2 * n) - 1);
 		nCol = new int[nRow];
@@ -95,16 +105,28 @@ public class BoardImpl {
 	/**
 	 * Set Poisition of with coordinates (x, y) to be occupied by PlayerImpl p
 	 */
-	public void setMove(int x, int y, PlayerImpl p){
+	public void setMove(int x, int y, PlayerImpl p, boolean temp){
+		Position movePos = this.getPosition(x, y);
 		bArray[x][y].setOccupy(p);
-		p.addPosition(this.getPosition(x, y));
+		p.addPosition(movePos);
 		this.nTotalMoves++;
-		return;
+		
+		// Set neighboring positions
+		if (!temp){
+			this.playersNeighPositions.get(p.piece).remove(movePos);
+			this.playersNeighPositions.get((p.piece == 1) ? 2:1).remove(movePos);
+			for (Position pos:movePos.getNeighbors()){
+				if (pos.getOwner() == null){
+					this.playersNeighPositions.get(p.piece).add(pos);
+				}
+			}
+		}
 	}
 	
 	public void removeMove(int x, int y, PlayerImpl p) {
 		bArray[x][y].setOccupy(null);
 		p.removePosition(this.getPosition(x, y));
+		this.nTotalMoves--;
 	}
 	
 	/* GETTER METHODS */
@@ -146,7 +168,11 @@ public class BoardImpl {
 	}
 	
 	public PlayerImpl[] getPlayerImpls(){
-		return this.playerImpls;
+		return this.players;
+	}
+	
+	public Set<Position> getPlayerNeighbors(int piece) {
+		return this.playersNeighPositions.get(piece);
 	}
 	
 	/**
@@ -162,7 +188,7 @@ public class BoardImpl {
 		
 		LoopCheck loopCheck = new LoopCheck(this);
 		if ((winner = loopCheck.check()) == null){
-			TripodCheck tripodCheck = new TripodCheck(this);
+			TripodCheck2 tripodCheck = new TripodCheck2(this);
 			if ((winner = tripodCheck.check()) == null){
 				// No winner yet
 				return -1;

@@ -88,8 +88,10 @@ public class LoopCheck implements CheckLogic {
 					// Checks whether center Position(s) is/are either owned
 					// by a different player or is/are empty. If it is,
 					// return true
-					if (centerDifferent(currentLoop)) {
-						return true;
+					if (currentLoop.size() > 5){
+						if (centerDifferent(currentLoop)) {
+							return true;
+						}
 					}
 					
 				}
@@ -115,6 +117,10 @@ public class LoopCheck implements CheckLogic {
 	private boolean centerDifferent(List<Position> currentLoop) {
 		
 		currentLoop = neatifyLoop(currentLoop);
+		
+		if (currentLoop == null) {
+			return false;
+		}
 
 		// rowCurrentPath is a HashMap representation of the currentLoop, which
 		// will map the x coordinates to a LinkedList containing the y
@@ -185,12 +191,13 @@ public class LoopCheck implements CheckLogic {
 		int size = loopArray.size();
 		
 		while (nCurr < size){
-			while (b.isAdjacent(loopArray.get(nCurr), loopArray.get((nCurr < 2) ? (size + nCurr - 3):(nCurr-2)))) {
+			while (b.isAdjacent(loopArray.get(nCurr), loopArray.get((nCurr < 2) ? (size + nCurr - 3): (nCurr-2)))) {
 				loopArray.remove(nCurr-1);
 				size = loopArray.size();
 				nCurr--;
 				if (size <= 3) {
-					break;
+					
+					return null;
 				}
 			}
 			nCurr++;
