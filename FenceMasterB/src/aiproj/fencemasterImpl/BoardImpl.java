@@ -34,7 +34,6 @@ public class BoardImpl {
 	 * 		- The number of columns in rows n to ((2*n)-2) would be ((3*n)-2-i)
 	 * @param n -  Number of sides
 	 */
-	@SuppressWarnings("unchecked")
 	public BoardImpl(int n, PlayerImpl[] playerImpls){
 		this.players = playerImpls;
 		this.n = n;

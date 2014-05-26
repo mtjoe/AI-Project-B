@@ -49,7 +49,7 @@ public class Egama implements Player, Piece {
 				 * the opponent might win
 				 */
 				if ((c = defense()) == null) {
-					if (nMoves <= (board.getTotalEntries())) {
+					if (nMoves <= (board.getTotalEntries() / 2)) {
 						/* TODO: Algorithm for first half of the game */
 
 						/* Random */
@@ -66,7 +66,7 @@ public class Egama implements Player, Piece {
 						MinimaxImpl minimaxImpl = new MinimaxImpl(board,
 								this.players);
 						Position best = minimaxImpl.MinimaxDecision();
-
+						c = new int[2];
 						c[0] = best.getX();
 						c[1] = best.getY();
 					}

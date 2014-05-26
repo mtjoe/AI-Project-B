@@ -166,6 +166,10 @@ public class LoopCheck implements CheckLogic {
 				// is either empty or owned by another player
 				Position currColPos = this.b.getPosition(currRow,
 						rowCurrentPath.get(currRow).getFirst()).getNeighborInDir("E");
+				
+				if (currColPos == null) {
+					return false;
+				}
 
 				while (!(rowCurrentPath.get(currRow)
 						.contains(currColPos.getY()))) {
@@ -191,8 +195,8 @@ public class LoopCheck implements CheckLogic {
 		int size = loopArray.size();
 		
 		while (nCurr < size){
-			while (b.isAdjacent(loopArray.get(nCurr), loopArray.get((nCurr < 2) ? (size + nCurr - 3): (nCurr-2)))) {
-				loopArray.remove(nCurr-1);
+			while (b.isAdjacent(loopArray.get((nCurr < 0) ? (size + nCurr - 1) : nCurr), loopArray.get((nCurr < 2) ? (size + nCurr - 3): (nCurr-2)))) {
+				loopArray.remove((nCurr <= 0)? (size+nCurr-2):(nCurr-1));
 				size = loopArray.size();
 				nCurr--;
 				if (size <= 3) {
