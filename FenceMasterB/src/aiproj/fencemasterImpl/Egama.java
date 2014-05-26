@@ -46,7 +46,7 @@ public class Egama implements Player, Piece {
 			/* TODO: Defense, check whether the opponent might win */
 			
 			
-			if (nMoves <= 50) {
+			if (nMoves <= (board.getTotalEntries() / 2)) {
 				/* TODO: Algorithm for first half of the game */
 				
 			} else {
@@ -92,5 +92,12 @@ public class Egama implements Player, Piece {
 		int y = (int) (Math.random() * board.getNCol(x));
 
 		return new int[] { x, y };
+	}
+	
+	private Move defense() {
+		
+		// Get neighboring positions of the opponents position
+		
+		return null;
 	}
 }
