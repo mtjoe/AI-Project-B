@@ -27,7 +27,7 @@ public class Egama implements Player, Piece {
 	public Move makeMove() {
 		// TODO: Algorithm for best move
 		int[] c = new int[2];
-		
+
 		int nMoves = board.getNTotalMoves();
 
 		/* FIRST MOVE: Random */
@@ -39,24 +39,36 @@ public class Egama implements Player, Piece {
 				c = this.getRandomMove();
 			}
 		} else {
-			
-			/* TODO: Find direct winning position (1 ply) */
-			
-			
-			/* TODO: Defense, check whether the opponent might win */
-			
-			
-			if (nMoves <= (board.getTotalEntries() / 2)) {
-				/* TODO: Algorithm for first half of the game */
-				
-			} else {
-				/* Algorithm for last half of the game, Minimax algorithm */
-				System.out.println("THIS IS IT");
-				MinimaxImpl minimaxImpl = new MinimaxImpl(board, this.players);
-				Position best = minimaxImpl.MinimaxDecision();
 
-				c[0] = best.getX();
-				c[1] = best.getY();
+			/* TODO: Find direct winning position (1 ply) */
+			if (directWin() != null) {
+
+			} else {
+
+				/*
+				 * TODO: If there is no direct win, check defense, check whether
+				 * the opponent might win
+				 */
+				if (defense() != null) {
+
+				} else {
+					if (nMoves <= (board.getTotalEntries() / 2)) {
+						/* TODO: Algorithm for first half of the game */
+
+					} else {
+						/*
+						 * Algorithm for last half of the game, Minimax
+						 * algorithm
+						 */
+						System.out.println("THIS IS IT");
+						MinimaxImpl minimaxImpl = new MinimaxImpl(board,
+								this.players);
+						Position best = minimaxImpl.MinimaxDecision();
+
+						c[0] = best.getX();
+						c[1] = best.getY();
+					}
+				}
 			}
 		}
 
@@ -93,11 +105,16 @@ public class Egama implements Player, Piece {
 
 		return new int[] { x, y };
 	}
-	
+
 	private Move defense() {
-		
+
 		// Get neighboring positions of the opponents position
-		
+
+		return null;
+	}
+
+	private Move directWin() {
+
 		return null;
 	}
 }
