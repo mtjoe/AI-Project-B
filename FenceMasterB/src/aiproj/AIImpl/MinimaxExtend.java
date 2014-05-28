@@ -6,7 +6,7 @@ import aiproj.fencemasterImpl.BoardImpl;
 import aiproj.fencemasterImpl.PlayerImpl;
 import aiproj.fencemasterImpl.Position;
 
-public class MinimaxImpl {
+public class MinimaxExtend {
 	BoardImpl board;
 	PlayerImpl mainPlayer, oppPlayer;
 	LinkedList<Position> emptyPos;
@@ -22,7 +22,7 @@ public class MinimaxImpl {
 	 *            - 2 entry array of PlayerImpl, players[0] is the home player,
 	 *            and players[1] is the opponent
 	 */
-	public MinimaxImpl(BoardImpl board, PlayerImpl[] players) {
+	public MinimaxExtend(BoardImpl board, PlayerImpl[] players) {
 		this.board = board;
 		this.emptyPos = new LinkedList<Position>();
 		this.mainPlayer = players[0];

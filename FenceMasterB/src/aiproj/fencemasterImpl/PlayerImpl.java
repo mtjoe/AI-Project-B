@@ -13,8 +13,7 @@ public class PlayerImpl {
 
 	/* ATTRIBUTES */
 
-	int piece;
-	
+	int piece;	
 
 	// Arraylist of Positions owned by this Player
 	public ArrayList<Position> positions;
