@@ -11,10 +11,6 @@ import aiproj.fencemaster.Player;
 public class Egama implements Player, Piece {
 	BoardImpl board;
 	PlayerImpl[] players;
-	int xLowerBound;
-	int xUpperBound;
-	int yLowerBound;
-	int yUpperBound;
 	int connectedEdge = 0;
 	int[] root = new int[2];
 	int nMoves;
@@ -31,14 +27,7 @@ public class Egama implements Player, Piece {
 
 		// Initialize Board
 		board = new BoardImpl(n, players);
-		this.xLowerBound = board.getNRow() / 4;
-		System.out.println("xLowerBound: " + this.xLowerBound);
-		this.xUpperBound = xLowerBound * 3;
-		System.out.println("xUpperBound: " + this.xUpperBound);
-		this.yLowerBound = board.getNCol(xLowerBound) / 4;
-		System.out.println("yLowerBound: " + this.yLowerBound);
-		this.yUpperBound = yLowerBound * 3;
-		System.out.println("xUpperrBound: " + this.xUpperBound);
+		
 		return 1;
 	}
 
@@ -53,7 +42,7 @@ public class Egama implements Player, Piece {
 		/* FIRST MOVE: Random */
 		if (nMoves <= 1) {
 
-			/* Random */
+			/* First Move */
 			this.root = this.getFirstMove();
 			c = this.root;
 			currX = this.root[0];
@@ -71,7 +60,7 @@ public class Egama implements Player, Piece {
 					if (nMoves <= (board.getTotalEntries() / 2)) {
 						/* TODO: Algorithm for first half of the game */
 
-						/* Random */
+						/* Offense algorithm */
 						c = this.offense(this.currX, this.currY);
 						this.currX = c[0];
 						this.currY = c[1];
@@ -123,16 +112,7 @@ public class Egama implements Player, Piece {
 
 		return new int[] { x, y };
 	}
-
-	private String getRealDistance(int x, int y) {
-		if (((x < this.xUpperBound) && (x > this.xLowerBound))
-				&& ((y < this.yUpperBound) && (y > this.yLowerBound))) {
-			return "Loop";
-		} else {
-			return "Tripod";
-		}
-	}
-
+	/* Divide the board into 2 zones in terms of x-coord, then find the closest edge to connect */
 	private void whichToConnect(int x, int y) {
 		System.out.println("whichToConnect");
 		
@@ -141,75 +121,164 @@ public class Egama implements Player, Piece {
 		} else {
 			this.extensionMode = "UpperSide";
 		}
-		System.out.println("extensionMode: " + this.extensionMode);
+		
 	}
 	
+	/* Set movement in the upperside of the board */
 	private int[] setUpperSide(int x, int y) {
 		System.out.println("setUpperSide: " + this.onWay);
 		Position pos = board.getPosition(x, y);
 		int[] c = new int[2];
 		if (this.onWay.equals("OFF")) {
 			
-			if ((pos.getNeighborInDir("NE").isEmpty()) && (pos.getNeighborInDir("NE").isNonCorner)) {
+			if (((pos.getNeighborInDir("NE").getOwner()) == null) && (pos.getNeighborInDir("NE").isNonCorner)) {
 				System.out.println("check NE");
  				Position now = pos.getNeighborInDir("NE");
 				c[0] = now.getX();
 				c[1] = now.getY();
 				this.onWay = "NE";
 				return c;
- 			} else if ((pos.getNeighborInDir("NW").isEmpty()) && (pos.getNeighborInDir("NW").isNonCorner)) {
- 				System.out.println("check NW");
- 				Position now = pos.getNeighborInDir("NW");
-				c[0] = now.getX();
-				c[1] = now.getY();
-				this.onWay = "NW";
-				return c;
- 			} else if ((pos.getNeighborInDir("W").isEmpty()) && (pos.getNeighborInDir("W").isNonCorner)) {
+ 			} else if (((pos.getNeighborInDir("W").getOwner()) == null) && (pos.getNeighborInDir("W").isNonCorner)) {
  				System.out.println("check W");
  				Position now = pos.getNeighborInDir("W");
 				c[0] = now.getX();
 				c[1] = now.getY();
 				this.onWay = "W";
 				return c;
- 			}else if ((pos.getNeighborInDir("E").isEmpty()) && (pos.getNeighborInDir("E").isNonCorner)) {
+ 			}else if (((pos.getNeighborInDir("E").getOwner()) == null) && (pos.getNeighborInDir("E").isNonCorner)) {
  				System.out.println("check E");
  				Position now = pos.getNeighborInDir("E");
 				c[0] = now.getX();
 				c[1] = now.getY();
 				this.onWay = "E";
 				return c;
- 			}
+ 			} else if (((pos.getNeighborInDir("NW").getOwner()) == null) && (pos.getNeighborInDir("NW").isNonCorner)) {
+ 				System.out.println("check NW");
+ 				Position now = pos.getNeighborInDir("NW");
+				c[0] = now.getX();
+				c[1] = now.getY();
+				this.onWay = "NW";
+				return c;
+ 			} else {
+ 				if (((pos.getNeighborInDir("SW").getOwner()) == null) && (pos.getNeighborInDir("SW").isNonCorner)) {
+ 	 				Position now = pos.getNeighborInDir("SW");
+ 					c[0] = now.getX();
+ 					c[1] = now.getY();
+ 					this.onWay = "W";
+ 					return c;
+ 			
+ 				} else if (((pos.getNeighborInDir("SE").getOwner()) == null) && (pos.getNeighborInDir("SE").isNonCorner)) {
+ 	 				Position now = pos.getNeighborInDir("SE");
+ 					c[0] = now.getX();
+ 					c[1] = now.getY();
+ 					this.onWay = "E";
+ 					return c;
+ 				} else {
+ 					Position now = pos.getNeighborInDir(this.onWay);
+ 					c[0] = now.getX();
+ 					c[1] = now.getY();
+ 					return c;
+ 				}
+ 			} 
+		} else {
+			if (this.onWay.equals("NE") && ((pos.getNeighborInDir("NE").getOwner()) == null) && (pos.getNeighborInDir("NE").isNonCorner)) {
+				if (((pos.getNeighborInDir("NW").getOwner()) == null) && (pos.getNeighborInDir("NW").isNonCorner)) {
+					System.out.println("check NW");
+	 				Position now = pos.getNeighborInDir("NW");
+					c[0] = now.getX();
+					c[1] = now.getY();
+					return c;
+				} else if (((pos.getNeighborInDir("W").getOwner()) == null) && (pos.getNeighborInDir("W").isNonCorner)) {
+	 				System.out.println("check W");
+	 				Position now = pos.getNeighborInDir("W");
+					c[0] = now.getX();
+					c[1] = now.getY();
+					return c;
+	 			} else if (((pos.getNeighborInDir("E").getOwner()) == null) && (pos.getNeighborInDir("E").isNonCorner)) {
+	 				System.out.println("check E");
+	 				Position now = pos.getNeighborInDir("E");
+					c[0] = now.getX();
+					c[1] = now.getY();
+					return c;
+	 			}
+			} else if (this.onWay.equals("NW") && ((pos.getNeighborInDir("NW").getOwner()) == null) && (pos.getNeighborInDir("NW").isNonCorner)) {
+				if (((pos.getNeighborInDir("NE").getOwner()) == null) && (pos.getNeighborInDir("NE").isNonCorner)) {
+					System.out.println("check NE");
+	 				Position now = pos.getNeighborInDir("NE");
+					c[0] = now.getX();
+					c[1] = now.getY();
+					return c;
+	 			} else if (((pos.getNeighborInDir("W").getOwner()) == null) && (pos.getNeighborInDir("W").isNonCorner)) {
+	 				System.out.println("check W");
+	 				Position now = pos.getNeighborInDir("W");
+					c[0] = now.getX();
+					c[1] = now.getY();
+					return c;
+	 			} else if (((pos.getNeighborInDir("E").getOwner()) == null) && (pos.getNeighborInDir("E").isNonCorner)) {
+	 				System.out.println("check E");
+	 				Position now = pos.getNeighborInDir("E");
+					c[0] = now.getX();
+					c[1] = now.getY();
+					return c;
+	 			}
+			} else if (this.onWay.equals("W") && ((pos.getNeighborInDir("W").getOwner()) == null) && (pos.getNeighborInDir("W").isNonCorner)) {
+				if (((pos.getNeighborInDir("NW").getOwner()) == null) && (pos.getNeighborInDir("NW").isNonCorner)) {
+					System.out.println("check NW");
+	 				Position now = pos.getNeighborInDir("NW");
+					c[0] = now.getX();
+					c[1] = now.getY();
+					return c;
+				} else if (((pos.getNeighborInDir("SW").getOwner()) == null) && (pos.getNeighborInDir("E").isNonCorner)) {
+	 				System.out.println("check SW");
+	 				Position now = pos.getNeighborInDir("SW");
+					c[0] = now.getX();
+					c[1] = now.getY();
+					return c;
+	 			}
+			} else {
+				if (((pos.getNeighborInDir("NE").getOwner()) == null) && (pos.getNeighborInDir("NW").isNonCorner)) {
+					System.out.println("check NE");
+	 				Position now = pos.getNeighborInDir("NE");
+					c[0] = now.getX();
+					c[1] = now.getY();
+					return c;
+				} else if (((pos.getNeighborInDir("SE").getOwner()) == null) && (pos.getNeighborInDir("E").isNonCorner)) {
+	 				System.out.println("check SE");
+	 				Position now = pos.getNeighborInDir("SE");
+					c[0] = now.getX();
+					c[1] = now.getY();
+					return c;
+	 			}
+			}
 		}
-		Position now = pos.getNeighborInDir(this.onWay);
-		c[0] = now.getX();
-		c[1] = now.getY();
 		return c;
 	}
 	
+	/* Set movement in the lowerside of the board */
 	private int[] setLowerSide(int x, int y) {
 		Position pos = board.getPosition(x, y);
 		int[] c = new int[2];
 		if (this.onWay.equals("OFF")) {
-			if ((pos.getNeighborInDir("SE").isEmpty()) && (pos.getNeighborInDir("SE").isNonCorner)) {
+			if (((pos.getNeighborInDir("SE").getOwner()) == null) && (pos.getNeighborInDir("SE").isNonCorner)) {
  				Position now = pos.getNeighborInDir("SE");
 				c[0] = now.getX();
 				c[1] = now.getY();
 				this.onWay = "SE";
 				return c;
- 			} else if ((pos.getNeighborInDir("SW").isEmpty()) && (pos.getNeighborInDir("SW").isNonCorner)) {
+ 			} else if (((pos.getNeighborInDir("SW").getOwner()) == null) && (pos.getNeighborInDir("SW").isNonCorner)) {
  				Position now = pos.getNeighborInDir("SW");
 				c[0] = now.getX();
 				c[1] = now.getY();
 				this.onWay = "SW";
 				return c;
- 			} else if ((pos.getNeighborInDir("W").isEmpty()) && (pos.getNeighborInDir("W").isNonCorner)) {
+ 			} else if (((pos.getNeighborInDir("W").getOwner()) == null) && (pos.getNeighborInDir("W").isNonCorner)) {
  				System.out.println("check W");
  				Position now = pos.getNeighborInDir("W");
 				c[0] = now.getX();
 				c[1] = now.getY();
 				this.onWay = "W";
 				return c;
- 			} else if ((pos.getNeighborInDir("E").isEmpty()) && (pos.getNeighborInDir("E").isNonCorner)) {
+ 			} else if (((pos.getNeighborInDir("E").getOwner()) == null) && (pos.getNeighborInDir("E").isNonCorner)) {
  				System.out.println("check E");
  				Position now = pos.getNeighborInDir("E");
 				c[0] = now.getX();
@@ -217,7 +286,7 @@ public class Egama implements Player, Piece {
 				this.onWay = "E";
 				return c;
  				
- 			}
+ 			} 
 		}
 		Position now = pos.getNeighborInDir(this.onWay);
 		c[0] = now.getX();
@@ -225,6 +294,7 @@ public class Egama implements Player, Piece {
 		return c;
 	}
 	
+	/* Set the offense to make Tripod */
 	private int[] makeTripod(int x, int y) {
 		System.out.println("makeTripod");
 		System.out.println(this.onWay + "- " + this.extensionMode + " " + this.currX + ":" + this.currY);
@@ -256,8 +326,11 @@ public class Egama implements Player, Piece {
 		
 		Position whereAt = board.getPosition(x, y);
 		String whichEdge;
+		
+		/* When the edge is reached */
 		if ((whereAt.isEdge && whereAt.isNonCorner) ) {
-			whichEdge = whereAt.getWhichEdge();	
+			
+			this.connectedEdge+=1;
 			this.currX = this.root[0];
 			this.currY = this.root[1];
 			this.onWay = "OFF";
@@ -265,12 +338,8 @@ public class Egama implements Player, Piece {
 			y = this.currY;
 		}
 		
-		//String mode = this.getRealDistance(x, y);
-		//if (mode.equals("Tripod")) {
 		return makeTripod(x, y);
-		/*} else {
-			return getRandomMove();
-		}*/
+		
 	}
 
 	private int[] getRandomMove() {
