@@ -149,8 +149,6 @@ public class BoardImpl {
 		return this.nCol[row];
 	}
 	
-	
-	
 	public int getTotalEntries() {
 		return this.totalEntries;
 	}

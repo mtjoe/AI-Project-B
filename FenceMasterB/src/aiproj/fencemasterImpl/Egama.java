@@ -1,7 +1,6 @@
 package aiproj.fencemasterImpl;
 
 import java.io.PrintStream;
-import java.util.HashSet;
 import java.util.Set;
 
 import aiproj.AIImpl.MinimaxImpl;
@@ -45,8 +44,8 @@ public class Egama implements Player, Piece {
 			/* Find direct winning position (1 ply) */
 			if ((c = directWin()) == null) {
 				/*
-				 * If there is no direct win, check defense, check whether
-				 * the opponent might win
+				 * If there is no direct win, check defense, check whether the
+				 * opponent might win
 				 */
 				if ((c = defense()) == null) {
 					if (nMoves <= (board.getTotalEntries() / 2)) {
@@ -120,7 +119,7 @@ public class Egama implements Player, Piece {
 		// Get neighboring positions of the opponents positions
 		Set<Position> neighborPos = board.getPlayerNeighbors(players[1].piece);
 
-		// Loop through
+		// Search for possibility of opponent win in first ply
 		for (Position pos : neighborPos) {
 
 			// Add move
@@ -136,6 +135,7 @@ public class Egama implements Player, Piece {
 				c[1] = pos.getY();
 				return c;
 			} else {
+				// Search for possibility of opponent win in second ply
 				for (Position posNeighbor : pos.getNeighbors()) {
 					if (posNeighbor.getOwner() == null) {
 						// Add move
@@ -165,6 +165,41 @@ public class Egama implements Player, Piece {
 			players[1].removePosition(pos);
 		}
 
+		// Search for possibility of opponent win in second ply
+		for (Position pos : neighborPos) {
+			// Add move
+			board.setMove(pos.getX(), pos.getY(), players[1], true);
+			players[1].addPosition(pos);
+
+			for (Position posNeighbor : pos.getNeighbors()) {
+				if (posNeighbor.getOwner() == null) {
+					// Add move
+					board.setMove(posNeighbor.getX(), posNeighbor.getY(),
+							players[1], true);
+					players[1].addPosition(posNeighbor);
+
+					if (board.getWinner() == players[1].piece) {
+						// remove move previously placed
+						board.removeMove(posNeighbor.getX(),
+								posNeighbor.getY(), players[1]);
+						players[1].removePosition(posNeighbor);
+
+						c[0] = pos.getX();
+						c[1] = pos.getY();
+						return c;
+					}
+					// remove move previously placed
+					board.removeMove(posNeighbor.getX(), posNeighbor.getY(),
+							players[1]);
+					players[1].removePosition(posNeighbor);
+				}
+			}
+
+			// remove move previously placed
+			board.removeMove(pos.getX(), pos.getY(), players[1]);
+			players[1].removePosition(pos);
+		}
+
 		return null;
 	}
 
@@ -187,7 +222,7 @@ public class Egama implements Player, Piece {
 				// remove move previously placed
 				board.removeMove(pos.getX(), pos.getY(), players[0]);
 				players[0].removePosition(pos);
-				
+
 				c[0] = pos.getX();
 				c[1] = pos.getY();
 
