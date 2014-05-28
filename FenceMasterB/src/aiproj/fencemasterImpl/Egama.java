@@ -178,12 +178,7 @@ public class Egama implements Player, Piece {
  					c[1] = now.getY();
  					this.onWay = "E";
  					return c;
- 				} else {
- 					Position now = pos.getNeighborInDir(this.onWay);
- 					c[0] = now.getX();
- 					c[1] = now.getY();
- 					return c;
- 				}
+ 				} 
  			}
 		} else {
 			if (this.onWay.equals("NE") && ((pos.getNeighborInDir("NE").getOwner()) != null) && (pos.getNeighborInDir("NE").isNonCorner)) {
@@ -309,6 +304,22 @@ public class Egama implements Player, Piece {
 				c[1] = now.getY();
 				this.onWay = "SW";
 				return c;
+ 			} else {
+ 				
+ 				if (((pos.getNeighborInDir("NW").getOwner()) == null) && (pos.getNeighborInDir("NW").isNonCorner)) {
+ 	 				Position now = pos.getNeighborInDir("NW");
+ 					c[0] = now.getX();
+ 					c[1] = now.getY();
+ 					this.onWay = "W";
+ 					return c;
+ 			
+ 				} else if (((pos.getNeighborInDir("NE").getOwner()) == null) && (pos.getNeighborInDir("NE").isNonCorner)) {
+ 	 				Position now = pos.getNeighborInDir("NE");
+ 					c[0] = now.getX();
+ 					c[1] = now.getY();
+ 					this.onWay = "E";
+ 					return c;
+ 				} 
  			}
 			
 		} else {
@@ -402,8 +413,8 @@ public class Egama implements Player, Piece {
 	}
 	
 	/* Set the offense to make Tripod */
-	private int[] makeTripod(int x, int y) {
-		System.out.println("makeTripod");
+	private int[] setOffenseMovement(int x, int y) {
+		System.out.println("setOffenseMovement");
 		System.out.println(this.onWay + "- " + this.extensionMode + " " + this.currX + ":" + this.currY);
 
 		Position whereAt = board.getPosition(x, y);
@@ -445,7 +456,7 @@ public class Egama implements Player, Piece {
 			y = this.currY;
 		}
 		
-		return makeTripod(x, y);
+		return setOffenseMovement(x, y);
 		
 	}
 
