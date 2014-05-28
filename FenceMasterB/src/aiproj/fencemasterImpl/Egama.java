@@ -163,7 +163,28 @@ public class Egama implements Player, Piece {
 				this.onWay = "NW";
 				return c;
 				
- 			} 
+ 			} else {
+ 				
+ 				if (((pos.getNeighborInDir("SW").getOwner()) == null) && (pos.getNeighborInDir("SW").isNonCorner)) {
+ 	 				Position now = pos.getNeighborInDir("SW");
+ 					c[0] = now.getX();
+ 					c[1] = now.getY();
+ 					this.onWay = "W";
+ 					return c;
+ 			
+ 				} else if (((pos.getNeighborInDir("SE").getOwner()) == null) && (pos.getNeighborInDir("SE").isNonCorner)) {
+ 	 				Position now = pos.getNeighborInDir("SE");
+ 					c[0] = now.getX();
+ 					c[1] = now.getY();
+ 					this.onWay = "E";
+ 					return c;
+ 				} else {
+ 					Position now = pos.getNeighborInDir(this.onWay);
+ 					c[0] = now.getX();
+ 					c[1] = now.getY();
+ 					return c;
+ 				}
+ 			}
 		} else {
 			if (this.onWay.equals("NE") && ((pos.getNeighborInDir("NE").getOwner()) != null) && (pos.getNeighborInDir("NE").isNonCorner)) {
 				
