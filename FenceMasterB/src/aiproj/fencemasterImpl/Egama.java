@@ -107,7 +107,6 @@ public class Egama implements Player, Piece {
 
 	/* HELPER FUNCTIONS */
 	private int[] getFirstMove() {
-
 		// If we are the first player, set in a bad position
 		if (this.board.firstMove && this.board.getNTotalMoves() == 0) {
 			return new int[] { 0, 0 };
@@ -482,7 +481,6 @@ public class Egama implements Player, Piece {
 
 		// Search for possibility of opponent win in first ply
 		for (Position pos : neighborPos) {
-
 			// Add move
 			board.setMove(pos.getX(), pos.getY(), players[1], true);
 			players[1].addPosition(pos);
