@@ -23,6 +23,7 @@ public class BoardImpl {
 	private int totalEntries;
 	private int nTotalMoves;
 	private Map<Integer, Set<Position>> playersNeighPositions;
+	boolean firstMove;
 	
 	/* PUBLIC CONSTRUCTOR */
 	
@@ -42,6 +43,7 @@ public class BoardImpl {
 		this.playersNeighPositions = new HashMap<Integer, Set<Position>>();
 		this.playersNeighPositions.put(playerImpls[0].piece, new HashSet<Position>());
 		this.playersNeighPositions.put(playerImpls[1].piece, new HashSet<Position>());
+		this.firstMove = true;
 		
 		nRow = ((2 * n) - 1);
 		nCol = new int[nRow];
@@ -107,11 +109,20 @@ public class BoardImpl {
 	public void setMove(int x, int y, PlayerImpl p, boolean temp){
 		Position movePos = this.getPosition(x, y);
 		bArray[x][y].setOccupy(p);
+		PlayerImpl oppPlayer = (players[0].equals(p)) ? (players[1]) : (players[0]);
+		
 		p.addPosition(movePos);
 		this.nTotalMoves++;
 		
 		// Set neighboring positions
 		if (!temp){
+			
+			// If swap, clear neighbor positions of opposite player
+			if (!firstMove && this.getNTotalMoves() == 1) {
+				this.playersNeighPositions.get(oppPlayer.piece).clear();
+				oppPlayer.removePosition(movePos);
+			}
+			
 			this.playersNeighPositions.get(p.piece).remove(movePos);
 			this.playersNeighPositions.get((p.piece == 1) ? 2:1).remove(movePos);
 			for (Position pos:movePos.getNeighbors()){
@@ -120,6 +131,8 @@ public class BoardImpl {
 				}
 			}
 		}
+		
+		if (firstMove) { firstMove = false; }
 	}
 	
 	public void removeMove(int x, int y, PlayerImpl p) {
