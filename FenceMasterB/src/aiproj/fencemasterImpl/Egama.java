@@ -59,7 +59,6 @@ public class Egama implements Player, Piece {
 			c = this.root;
 			currX = this.root[0];
 			currY = this.root[1];
-			Position whereAt = board.getPosition(c[0], c[1]);
 			
 		} else {
 
@@ -77,13 +76,7 @@ public class Egama implements Player, Piece {
 						c = this.offense(this.currX, this.currY);
 						this.currX = c[0];
 						this.currY = c[1];
-						/*while (!board.getPosition(c[0], c[1]).isEmpty()) {
-							this.onWay = "OFF";
-							this.extensionMode = "OFF";
-							c = this.offense(this.currX, this.currY);
-							this.currX = c[0];
-							this.currY = c[1];
-						}*/
+			
 					} else {
 						/*
 						 * Algorithm for last half of the game, minimax
@@ -157,30 +150,29 @@ public class Egama implements Player, Piece {
 		Position pos = board.getPosition(x, y);
 		int[] c = new int[2];
 		if (this.onWay.equals("OFF")) {
-			//System.out.println("check this" + !(pos.getNeighborInDir("NE").isEmpty()));
 			
-			if ((pos.getNeighborInDir("NE").isEmpty()) || (pos.getNeighborInDir("NE").isNonCorner)) {
+			if ((pos.getNeighborInDir("NE").isEmpty()) && (pos.getNeighborInDir("NE").isNonCorner)) {
 				System.out.println("check NE");
  				Position now = pos.getNeighborInDir("NE");
 				c[0] = now.getX();
 				c[1] = now.getY();
 				this.onWay = "NE";
 				return c;
- 			} else if ((pos.getNeighborInDir("NW").isEmpty()) || (pos.getNeighborInDir("NW").isNonCorner)) {
+ 			} else if ((pos.getNeighborInDir("NW").isEmpty()) && (pos.getNeighborInDir("NW").isNonCorner)) {
  				System.out.println("check NW");
  				Position now = pos.getNeighborInDir("NW");
 				c[0] = now.getX();
 				c[1] = now.getY();
 				this.onWay = "NW";
 				return c;
- 			} else if ((pos.getNeighborInDir("W").isEmpty()) || (pos.getNeighborInDir("W").isNonCorner)) {
+ 			} else if ((pos.getNeighborInDir("W").isEmpty()) && (pos.getNeighborInDir("W").isNonCorner)) {
  				System.out.println("check W");
  				Position now = pos.getNeighborInDir("W");
 				c[0] = now.getX();
 				c[1] = now.getY();
 				this.onWay = "W";
 				return c;
- 			}else if ((pos.getNeighborInDir("E").isEmpty()) || (pos.getNeighborInDir("E").isNonCorner)) {
+ 			}else if ((pos.getNeighborInDir("E").isEmpty()) && (pos.getNeighborInDir("E").isNonCorner)) {
  				System.out.println("check E");
  				Position now = pos.getNeighborInDir("E");
 				c[0] = now.getX();
@@ -199,26 +191,26 @@ public class Egama implements Player, Piece {
 		Position pos = board.getPosition(x, y);
 		int[] c = new int[2];
 		if (this.onWay.equals("OFF")) {
-			if ((pos.getNeighborInDir("SE").isEmpty()) || (pos.getNeighborInDir("SE").isNonCorner)) {
+			if ((pos.getNeighborInDir("SE").isEmpty()) && (pos.getNeighborInDir("SE").isNonCorner)) {
  				Position now = pos.getNeighborInDir("SE");
 				c[0] = now.getX();
 				c[1] = now.getY();
 				this.onWay = "SE";
 				return c;
- 			} else if ((pos.getNeighborInDir("SW").isEmpty()) || (pos.getNeighborInDir("SW").isNonCorner)) {
+ 			} else if ((pos.getNeighborInDir("SW").isEmpty()) && (pos.getNeighborInDir("SW").isNonCorner)) {
  				Position now = pos.getNeighborInDir("SW");
 				c[0] = now.getX();
 				c[1] = now.getY();
 				this.onWay = "SW";
 				return c;
- 			} else if ((pos.getNeighborInDir("W").isEmpty()) || (pos.getNeighborInDir("W").isNonCorner)) {
+ 			} else if ((pos.getNeighborInDir("W").isEmpty()) && (pos.getNeighborInDir("W").isNonCorner)) {
  				System.out.println("check W");
  				Position now = pos.getNeighborInDir("W");
 				c[0] = now.getX();
 				c[1] = now.getY();
 				this.onWay = "W";
 				return c;
- 			} else if ((pos.getNeighborInDir("E").isEmpty()) || (pos.getNeighborInDir("E").isNonCorner)) {
+ 			} else if ((pos.getNeighborInDir("E").isEmpty()) && (pos.getNeighborInDir("E").isNonCorner)) {
  				System.out.println("check E");
  				Position now = pos.getNeighborInDir("E");
 				c[0] = now.getX();
