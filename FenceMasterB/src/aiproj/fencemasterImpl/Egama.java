@@ -138,6 +138,7 @@ public class Egama implements Player, Piece {
 				c[1] = now.getY();
 				this.onWay = "NE";
 				return c;
+				
  			} else if (((pos.getNeighborInDir("W").getOwner()) == null) && (pos.getNeighborInDir("W").isNonCorner)) {
  				System.out.println("check W");
  				Position now = pos.getNeighborInDir("W");
@@ -145,13 +146,15 @@ public class Egama implements Player, Piece {
 				c[1] = now.getY();
 				this.onWay = "W";
 				return c;
- 			}else if (((pos.getNeighborInDir("E").getOwner()) == null) && (pos.getNeighborInDir("E").isNonCorner)) {
+				
+ 			} else if (((pos.getNeighborInDir("E").getOwner()) == null) && (pos.getNeighborInDir("E").isNonCorner)) {
  				System.out.println("check E");
  				Position now = pos.getNeighborInDir("E");
 				c[0] = now.getX();
 				c[1] = now.getY();
 				this.onWay = "E";
 				return c;
+				
  			} else if (((pos.getNeighborInDir("NW").getOwner()) == null) && (pos.getNeighborInDir("NW").isNonCorner)) {
  				System.out.println("check NW");
  				Position now = pos.getNeighborInDir("NW");
@@ -159,75 +162,66 @@ public class Egama implements Player, Piece {
 				c[1] = now.getY();
 				this.onWay = "NW";
 				return c;
- 			} else {
- 				if (((pos.getNeighborInDir("SW").getOwner()) == null) && (pos.getNeighborInDir("SW").isNonCorner)) {
- 	 				Position now = pos.getNeighborInDir("SW");
- 					c[0] = now.getX();
- 					c[1] = now.getY();
- 					this.onWay = "W";
- 					return c;
- 			
- 				} else if (((pos.getNeighborInDir("SE").getOwner()) == null) && (pos.getNeighborInDir("SE").isNonCorner)) {
- 	 				Position now = pos.getNeighborInDir("SE");
- 					c[0] = now.getX();
- 					c[1] = now.getY();
- 					this.onWay = "E";
- 					return c;
- 				} else {
- 					Position now = pos.getNeighborInDir(this.onWay);
- 					c[0] = now.getX();
- 					c[1] = now.getY();
- 					return c;
- 				}
+				
  			} 
 		} else {
-			if (this.onWay.equals("NE") && ((pos.getNeighborInDir("NE").getOwner()) == null) && (pos.getNeighborInDir("NE").isNonCorner)) {
+			if (this.onWay.equals("NE") && ((pos.getNeighborInDir("NE").getOwner()) != null) && (pos.getNeighborInDir("NE").isNonCorner)) {
+				
 				if (((pos.getNeighborInDir("NW").getOwner()) == null) && (pos.getNeighborInDir("NW").isNonCorner)) {
 					System.out.println("check NW");
 	 				Position now = pos.getNeighborInDir("NW");
 					c[0] = now.getX();
 					c[1] = now.getY();
 					return c;
+				
 				} else if (((pos.getNeighborInDir("W").getOwner()) == null) && (pos.getNeighborInDir("W").isNonCorner)) {
 	 				System.out.println("check W");
 	 				Position now = pos.getNeighborInDir("W");
 					c[0] = now.getX();
 					c[1] = now.getY();
 					return c;
-	 			} else if (((pos.getNeighborInDir("E").getOwner()) == null) && (pos.getNeighborInDir("E").isNonCorner)) {
+	 			
+				} else if (((pos.getNeighborInDir("E").getOwner()) == null) && (pos.getNeighborInDir("E").isNonCorner)) {
 	 				System.out.println("check E");
 	 				Position now = pos.getNeighborInDir("E");
 					c[0] = now.getX();
 					c[1] = now.getY();
 					return c;
 	 			}
-			} else if (this.onWay.equals("NW") && ((pos.getNeighborInDir("NW").getOwner()) == null) && (pos.getNeighborInDir("NW").isNonCorner)) {
+			
+			} else if (this.onWay.equals("NW") && ((pos.getNeighborInDir("NW").getOwner()) != null) && (pos.getNeighborInDir("NW").isNonCorner)) {
+			
 				if (((pos.getNeighborInDir("NE").getOwner()) == null) && (pos.getNeighborInDir("NE").isNonCorner)) {
 					System.out.println("check NE");
 	 				Position now = pos.getNeighborInDir("NE");
 					c[0] = now.getX();
 					c[1] = now.getY();
 					return c;
-	 			} else if (((pos.getNeighborInDir("W").getOwner()) == null) && (pos.getNeighborInDir("W").isNonCorner)) {
+	 			
+				} else if (((pos.getNeighborInDir("W").getOwner()) == null) && (pos.getNeighborInDir("W").isNonCorner)) {
 	 				System.out.println("check W");
 	 				Position now = pos.getNeighborInDir("W");
 					c[0] = now.getX();
 					c[1] = now.getY();
 					return c;
-	 			} else if (((pos.getNeighborInDir("E").getOwner()) == null) && (pos.getNeighborInDir("E").isNonCorner)) {
+	 			
+				} else if (((pos.getNeighborInDir("E").getOwner()) == null) && (pos.getNeighborInDir("E").isNonCorner)) {
 	 				System.out.println("check E");
 	 				Position now = pos.getNeighborInDir("E");
 					c[0] = now.getX();
 					c[1] = now.getY();
 					return c;
 	 			}
-			} else if (this.onWay.equals("W") && ((pos.getNeighborInDir("W").getOwner()) == null) && (pos.getNeighborInDir("W").isNonCorner)) {
+			
+			} else if (this.onWay.equals("W") && ((pos.getNeighborInDir("W").getOwner()) != null) && (pos.getNeighborInDir("W").isNonCorner)) {
+			
 				if (((pos.getNeighborInDir("NW").getOwner()) == null) && (pos.getNeighborInDir("NW").isNonCorner)) {
 					System.out.println("check NW");
 	 				Position now = pos.getNeighborInDir("NW");
 					c[0] = now.getX();
 					c[1] = now.getY();
 					return c;
+				
 				} else if (((pos.getNeighborInDir("SW").getOwner()) == null) && (pos.getNeighborInDir("E").isNonCorner)) {
 	 				System.out.println("check SW");
 	 				Position now = pos.getNeighborInDir("SW");
@@ -235,14 +229,17 @@ public class Egama implements Player, Piece {
 					c[1] = now.getY();
 					return c;
 	 			}
-			} else {
-				if (((pos.getNeighborInDir("NE").getOwner()) == null) && (pos.getNeighborInDir("NW").isNonCorner)) {
+			
+			} else if (this.onWay.equals("E") && ((pos.getNeighborInDir("E").getOwner()) != null) && (pos.getNeighborInDir("E").isNonCorner)) {
+			
+				if (((pos.getNeighborInDir("NE").getOwner()) == null) && (pos.getNeighborInDir("NE").isNonCorner)) {
 					System.out.println("check NE");
 	 				Position now = pos.getNeighborInDir("NE");
 					c[0] = now.getX();
 					c[1] = now.getY();
 					return c;
-				} else if (((pos.getNeighborInDir("SE").getOwner()) == null) && (pos.getNeighborInDir("E").isNonCorner)) {
+				
+				} else if (((pos.getNeighborInDir("SE").getOwner()) == null) && (pos.getNeighborInDir("SE").isNonCorner)) {
 	 				System.out.println("check SE");
 	 				Position now = pos.getNeighborInDir("SE");
 					c[0] = now.getX();
@@ -251,7 +248,11 @@ public class Egama implements Player, Piece {
 	 			}
 			}
 		}
+		Position now = pos.getNeighborInDir(this.onWay);
+		c[0] = now.getX();
+		c[1] = now.getY();
 		return c;
+		
 	}
 	
 	/* Set movement in the lowerside of the board */
@@ -265,12 +266,7 @@ public class Egama implements Player, Piece {
 				c[1] = now.getY();
 				this.onWay = "SE";
 				return c;
- 			} else if (((pos.getNeighborInDir("SW").getOwner()) == null) && (pos.getNeighborInDir("SW").isNonCorner)) {
- 				Position now = pos.getNeighborInDir("SW");
-				c[0] = now.getX();
-				c[1] = now.getY();
-				this.onWay = "SW";
-				return c;
+				
  			} else if (((pos.getNeighborInDir("W").getOwner()) == null) && (pos.getNeighborInDir("W").isNonCorner)) {
  				System.out.println("check W");
  				Position now = pos.getNeighborInDir("W");
@@ -278,6 +274,7 @@ public class Egama implements Player, Piece {
 				c[1] = now.getY();
 				this.onWay = "W";
 				return c;
+				
  			} else if (((pos.getNeighborInDir("E").getOwner()) == null) && (pos.getNeighborInDir("E").isNonCorner)) {
  				System.out.println("check E");
  				Position now = pos.getNeighborInDir("E");
@@ -285,8 +282,97 @@ public class Egama implements Player, Piece {
 				c[1] = now.getY();
 				this.onWay = "E";
 				return c;
- 				
- 			} 
+ 			} else if (((pos.getNeighborInDir("SW").getOwner()) == null) && (pos.getNeighborInDir("SW").isNonCorner)) {
+ 				Position now = pos.getNeighborInDir("SW");
+				c[0] = now.getX();
+				c[1] = now.getY();
+				this.onWay = "SW";
+				return c;
+ 			}
+			
+		} else {
+			if (this.onWay.equals("SE") && ((pos.getNeighborInDir("SE").getOwner()) != null) && (pos.getNeighborInDir("SE").isNonCorner)) {
+				
+				if (((pos.getNeighborInDir("NE").getOwner()) == null) && (pos.getNeighborInDir("NE").isNonCorner)) {
+					System.out.println("check NE");
+	 				Position now = pos.getNeighborInDir("NE");
+					c[0] = now.getX();
+					c[1] = now.getY();
+					return c;
+				
+				} else if (((pos.getNeighborInDir("W").getOwner()) == null) && (pos.getNeighborInDir("W").isNonCorner)) {
+	 				System.out.println("check W");
+	 				Position now = pos.getNeighborInDir("W");
+					c[0] = now.getX();
+					c[1] = now.getY();
+					return c;
+	 			
+				} else if (((pos.getNeighborInDir("E").getOwner()) == null) && (pos.getNeighborInDir("E").isNonCorner)) {
+	 				System.out.println("check E");
+	 				Position now = pos.getNeighborInDir("E");
+					c[0] = now.getX();
+					c[1] = now.getY();
+					return c;
+	 			}
+			
+			} else if (this.onWay.equals("SW") && ((pos.getNeighborInDir("SW").getOwner()) != null) && (pos.getNeighborInDir("SW").isNonCorner)) {
+			
+				if (((pos.getNeighborInDir("SE").getOwner()) == null) && (pos.getNeighborInDir("SE").isNonCorner)) {
+					System.out.println("check SE");
+	 				Position now = pos.getNeighborInDir("SE");
+					c[0] = now.getX();
+					c[1] = now.getY();
+					return c;
+	 			
+				} else if (((pos.getNeighborInDir("W").getOwner()) == null) && (pos.getNeighborInDir("W").isNonCorner)) {
+	 				System.out.println("check W");
+	 				Position now = pos.getNeighborInDir("W");
+					c[0] = now.getX();
+					c[1] = now.getY();
+					return c;
+	 			
+				} else if (((pos.getNeighborInDir("E").getOwner()) == null) && (pos.getNeighborInDir("E").isNonCorner)) {
+	 				System.out.println("check E");
+	 				Position now = pos.getNeighborInDir("E");
+					c[0] = now.getX();
+					c[1] = now.getY();
+					return c;
+	 			}
+			
+			} else if (this.onWay.equals("W") && ((pos.getNeighborInDir("W").getOwner()) != null) && (pos.getNeighborInDir("W").isNonCorner)) {
+			
+				if (((pos.getNeighborInDir("SW").getOwner()) == null) && (pos.getNeighborInDir("SW").isNonCorner)) {
+					System.out.println("check SW");
+	 				Position now = pos.getNeighborInDir("SW");
+					c[0] = now.getX();
+					c[1] = now.getY();
+					return c;
+				
+				} else if (((pos.getNeighborInDir("NW").getOwner()) == null) && (pos.getNeighborInDir("E").isNonCorner)) {
+	 				System.out.println("check NW");
+	 				Position now = pos.getNeighborInDir("NW");
+					c[0] = now.getX();
+					c[1] = now.getY();
+					return c;
+	 			}
+			
+			} else if (this.onWay.equals("E") && ((pos.getNeighborInDir("E").getOwner()) != null) && (pos.getNeighborInDir("E").isNonCorner)) {
+			
+				if (((pos.getNeighborInDir("SE").getOwner()) == null) && (pos.getNeighborInDir("SE").isNonCorner)) {
+					System.out.println("check SE");
+	 				Position now = pos.getNeighborInDir("SE");
+					c[0] = now.getX();
+					c[1] = now.getY();
+					return c;
+				
+				} else if (((pos.getNeighborInDir("NE").getOwner()) == null) && (pos.getNeighborInDir("NE").isNonCorner)) {
+	 				System.out.println("check NE");
+	 				Position now = pos.getNeighborInDir("NE");
+					c[0] = now.getX();
+					c[1] = now.getY();
+					return c;
+	 			}
+			}
 		}
 		Position now = pos.getNeighborInDir(this.onWay);
 		c[0] = now.getX();
